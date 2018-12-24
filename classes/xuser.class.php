@@ -7,6 +7,7 @@ class Xuser {
     public $email;
     public $email_validated = null;
     public $groups = null;
+    public $hash = null;
     public $ext = array();
 
     public function __construct($userid = 0) {
@@ -29,6 +30,8 @@ class Xuser {
         $this->email = (isset($data['email']) && strval($data['email']) ? $data['email'] : 'no@email.com');
         $this->email_validated = (isset($data['email_validated']) && boolval($data['email_validated']) ? $data['email_validated'] : false);
         $this->groups = array();
+        //
+        $this->hash = strtoupper(md5($this->id . '||' . $this->email));
     }
 
     public function add_extension($ext_name, $ext_value) {
@@ -61,6 +64,11 @@ class Xuser {
             }
         }
         return $output;
+    }
+    
+    public function email_confirmation() {
+        $email_response = Emails::create('confirmation', $this->email, $this);
+        return $email_response;
     }
 
 }
