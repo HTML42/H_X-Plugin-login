@@ -4,7 +4,7 @@
 //#plugins/login/templates/login.php
 .xlogin_form {
     position: relative;
-    padding: @distance_small;
+    padding: @distance_tiny;
     border: none;
     background-color: rgba(0, 0, 0, 0.2);
 
@@ -30,6 +30,7 @@
         border: none;
         background-color: rgba(0, 0, 0, 0.2);
         color: #FFF;
+        margin: 0;
         label {
             display: block;
         }
@@ -48,6 +49,10 @@
             padding: 0 @distance_normal;
             display: block;
             width: 100%;
+            &::placeholder {
+                color: rgba(0, 0, 0, 0.5);
+                font-style: italic;
+            }
         }
     }
     .form_row_buttons {

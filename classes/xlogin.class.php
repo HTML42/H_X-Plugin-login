@@ -4,7 +4,7 @@ class Xlogin {
 
     const TEMPLATES = array(
         'login' => X_LOGIN_PATH . 'templates/login.php',
-        'registration' => X_LOGIN_PATH . 'templates/registration.php',
+        'signup' => X_LOGIN_PATH . 'templates/signup.php',
     );
 
     public static $config = array(
@@ -18,11 +18,33 @@ class Xlogin {
         ),
         'login' => array(
             'form_css_class' => 'xlogin_form',
-            'placeholder_username' => 'Benutzername..',
-            'placeholder_password' => 'Passwort..',
+            'label_username' => 'Benutzername',
+            'label_password' => 'Passwort',
+            'placeholder_username' => 'Benutzername',
+            'placeholder_password' => 'Passwort',
             'button_submit' => 'Login',
-            'button_cancel' => 'Abbrechen',
-        )
+        ),
+        'signup' => array(
+            'form_css_class' => 'xlogin_form',
+            'label_username' => 'Benutzername',
+            'label_email' => 'E-Mail',
+            'label_password' => 'Passwort',
+            'label_password2' => 'Passwort wiederholen',
+            'placeholder_username' => 'Benutzername',
+            'placeholder_email' => 'E-Mail',
+            'placeholder_password' => 'Passwort',
+            'placeholder_password2' => 'Passwort wiederholen',
+            'button_submit' => 'Registration',
+        ),
+        'validation' => array(
+            'username' => array(
+                'min-length' => 2,
+                'max-length' => 32
+            ),
+            'password' => array(
+                'min-length' => 4
+            )
+        ),
     );
 
     public static function password($string) {

@@ -2,6 +2,10 @@
 
 class Xlogin_DB {
 
+    public static $CACHE = array(
+        'users' => null
+    );
+
     public function __construct() {
         switch (Xlogin::$config['db']['system']) {
             case 'mysql':
@@ -17,10 +21,13 @@ class Xlogin_DB {
     }
 
     public function get_users() {
+        if (!is_null(self::$CACHE['users']) && is_array(self::$CACHE['users'])) {
+            return self::$CACHE['users'];
+        }
         if (Xlogin::$config['db']['system'] == 'xlogin') {
             $table = $this->get_table('users');
             if ($table) {
-                return $table;
+                return self::$CACHE['users'] = $table;
             } else {
                 return array();
             }
@@ -50,6 +57,56 @@ class Xlogin_DB {
             }
         }
         return null;
+    }
+
+    public function create_user($user_data) {
+        if (is_array($user_data)) {
+            $new_id = $this->_new_id('users');
+            $current_users = $this->get_users();
+            array_push($current_users, array(
+                'id' => $new_id,
+                'username' => self::_value($user_data['username'], 'Unknown'),
+                'email' => self::_value($user_data['email']),
+                'password' => self::_value($user_data['password'], '#no-password#'),
+                'email_validated' => false,
+            ));
+            File::_save_file(Xlogin::$config['db']['dir_db'] . 'users.json', json_encode($current_users));
+            //
+            self::$CACHE['users'] = null;
+            return $new_id;
+        }
+        return null;
+    }
+
+    public function _new_id($table = 'users') {
+        switch ($table) {
+            case 'user':
+            case 'users':
+                $items = $this->get_users();
+                break;
+        }
+        $highest_id = 0;
+        foreach ($items as $row) {
+            if (isset($row['id']) && $row['id'] > $highest_id) {
+                $highest_id = intval($row['id']);
+            }
+        }
+        $highest_id++;
+        return $highest_id;
+    }
+
+    public static function _value($value = 'undefined', $default = 'undefined', $type = 'string') {
+        if ($type == 'string') {
+            $value = trim($value);
+            if (strlen($value) > 0) {
+                return $value;
+            }
+        } else if ($type == 'number') {
+            if (is_numeric($value)) {
+                return $value;
+            }
+        }
+        return $default;
     }
 
 }
