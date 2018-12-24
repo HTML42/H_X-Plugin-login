@@ -8,9 +8,11 @@ class Xlogin_DB {
                 //ToDo: Create Mysql-Login
                 break;
             case 'xlogin':
+                Xlogin::$config['db']['dir_db'] = File::n(Xlogin::$config['db']['dir_db']);
                 Utilities::ensure_structure(Xlogin::$config['db']['dir_db']);
                 break;
         }
+        Xlogin::$config['db']['dir_cache'] = File::n(Xlogin::$config['db']['dir_cache']);
         Utilities::ensure_structure(Xlogin::$config['db']['dir_cache']);
     }
 

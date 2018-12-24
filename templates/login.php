@@ -9,7 +9,7 @@
         <label class="form_row">
             <div class="form_label">Passwort</div>
             <div class="form_input">
-                <input type="text" name="user[password]" placeholder="<?= Xlogin::$config['login']['placeholder_password'] ?>" />
+                <input type="password" name="user[password]" placeholder="<?= Xlogin::$config['login']['placeholder_password'] ?>" />
             </div>
         </label>
     </fieldset>
@@ -19,4 +19,8 @@
                 <input type="submit" name="submit_x" value="<?= Xlogin::$config['login']['button_submit'] ?>" />
         </div>
     </fieldset>
+    <?php if(X_LOGIN) { ?>
+    <div class="xlogin_already_logged_in"><div class="xlogin_logoutlink"><div class="xlogin_logoutlink_text">Logout</div></div></div>
+    <div class="xlogin_already_logged_in_spacer"></div>
+    <?php } ?>
 </form>

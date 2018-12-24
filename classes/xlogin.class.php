@@ -24,9 +24,30 @@ class Xlogin {
             'button_cancel' => 'Abbrechen',
         )
     );
-    
+
     public static function password($string) {
         return sha1($string . 'XL!');
+    }
+
+    public static function session($key, $value = '#undefined#') {
+        if (isset($_SESSION['xlogin']) && $_SESSION['xlogin'] != Utilities::remote_ip()) {
+            return null;
+        }
+        if ($value === '#undefined#') {
+            if (!isset($_SESSION['xlogin_data'])) {
+                return null;
+            }
+            return (isset($_SESSION['xlogin_data'][$key]) ? $_SESSION['xlogin_data'][$key] : null);
+        } else {
+            if (!isset($_SESSION['xlogin'])) {
+                $_SESSION['xlogin'] = Utilities::remote_ip();
+            }
+            if (!isset($_SESSION['xlogin_data']) || !is_array($_SESSION['xlogin_data'])) {
+                $_SESSION['xlogin_data'] = array();
+            }
+            $_SESSION['xlogin_data'][$key] = $value;
+        }
+        return true;
     }
 
 }

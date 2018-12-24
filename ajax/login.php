@@ -1,6 +1,6 @@
 <?php
 
-include ROOT . 'library/bootstrap.php';
+include '../../../xtreme/library/bootstrap.php';
 
 $response = array(
     'status' => 400,
@@ -11,20 +11,24 @@ $response = array(
 
 if (isset($_POST['user']) && is_array($_POST['user']) && isset($_POST['user']['username']) && isset($_POST['user']['password'])) {
     $username = Utilities::validate($_POST['user']['username']);
-    $pw = @Xlogin::password($_POST['user']['password']);
+    $pw = Xlogin::password($_POST['user']['password']);
     //
     $match = false;
     $userid = 0;
-    foreach ($this->get_users() as $user) {
+    foreach ($XLDB->get_users() as $user) {
         if (($user['username'] == $username || $user['email'] == $username) && $user['password'] == $pw) {
             $match = true;
-            $userid = $user['id'];
+            $userid = intval($user['id']);
+            break;
         }
     }
     if ($match) {
-        //Success
+        Xlogin::session('userid', $userid);
         $response['status'] = 200;
-        $response['response'] = 'Login Successful.';
+        $response['response'] = array(
+            'userid' => $userid,
+            'user' => $user,
+        );
     } else {
         array_push($response['errors'], 'Username or password wrong.');
         $response['error_code'] = 2;
@@ -34,4 +38,5 @@ if (isset($_POST['user']) && is_array($_POST['user']) && isset($_POST['user']['u
     $response['error_code'] = 1;
 }
 
-echo json_encode($response);
+App::$mime = 'application/json';
+Response::deliver(json_encode($response));
