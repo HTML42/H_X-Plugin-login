@@ -1,0 +1,85 @@
+//#Variables
+@xlogin_row_height: 40px;
+
+//#plugins/login/templates/login.php
+.xlogin_form {
+    padding: @distance_small;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.2);
+
+    //Dimensions
+    /*
+    fieldset {
+        .form_row {
+            .form_label {}
+            .form_input {
+                input {}
+            }
+        }
+        .form_row.form_row_buttons {}
+            input[type=reset]{}
+            input[type=submit]{}
+        }
+    }
+    */
+
+    //Styles
+    fieldset {
+        padding: @distance_small;
+        border: none;
+        background-color: rgba(0, 0, 0, 0.2);
+        color: #FFF;
+        label {
+            display: block;
+        }
+    }
+    .form_row {
+        + .form_row {
+            margin-top: @distance_small;
+        }
+    }
+    .form_label {
+        margin-bottom: @distance_tiny;
+    }
+    .form_input {
+        input {
+            .h(@xlogin_row_height);
+            padding: 0 @distance_normal;
+            display: block;
+            width: 100%;
+        }
+    }
+    .form_row_buttons {
+        text-align: right;
+    }
+    input[type=submit], input[type=reset], input[type=button] {
+        .button();
+        font-weight: 700;
+        color: #333;
+        display: inline-block;
+        &:hover {
+            color: #111;
+        }
+        + input[type=submit], + input[type=reset], + input[type=button] {
+            margin-left: @distance_normal;
+        }
+    }
+    //Big Screens
+    @media @media_big {
+        .form_row {
+            .clear_after();
+        }
+        .form_label, .form_input {
+            float: left;
+        }
+        .form_label {
+            line-height: @xlogin_row_height;
+            width: 40%;
+        }
+        .form_input {
+            width: 60%;
+            input {
+            }
+        }
+    }
+}
