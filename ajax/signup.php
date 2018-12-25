@@ -4,7 +4,7 @@ include '../../../xtreme/library/bootstrap.php';
 
 $response = array(
     'status' => 400,
-    'resposne' => array(),
+    'response' => array(),
     'errors' => array(),
     'error_code' => 0
 );

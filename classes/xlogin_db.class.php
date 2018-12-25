@@ -2,6 +2,7 @@
 
 class Xlogin_DB {
 
+    public $connected = false;
     public static $CACHE = array(
         'users' => null
     );
@@ -11,9 +12,15 @@ class Xlogin_DB {
             case 'mysql':
                 //ToDo: Create Mysql-Login
                 break;
+            case 'xjsondb':
+                if (class_exists('Xjsondb')) {
+                    $this->connected = true;
+                }
+                break;
             case 'xlogin':
                 Xlogin::$config['db']['dir_db'] = File::n(Xlogin::$config['db']['dir_db']);
                 Utilities::ensure_structure(Xlogin::$config['db']['dir_db']);
+                $this->connected = true;
                 break;
         }
         //Xlogin-Cache currently unused
@@ -32,6 +39,8 @@ class Xlogin_DB {
             } else {
                 return array();
             }
+        } else if (Xlogin::$config['db']['system'] == 'xjsondb' && $this->connected) {
+            return self::$CACHE['users'] = Xjsondb::select('users');
         }
         return null;
     }
@@ -44,6 +53,9 @@ class Xlogin_DB {
                 }
             }
             return null;
+        } else if (Xlogin::$config['db']['system'] == 'xjsondb' && $this->connected) {
+            $user_data = Xjsondb::select('users', $id);
+            return isset($user_data[0]) ? $user_data[0] : array();
         }
         return null;
     }
@@ -62,20 +74,29 @@ class Xlogin_DB {
 
     public function create_user($user_data) {
         if (is_array($user_data)) {
-            $new_id = $this->_new_id('users');
-            $current_users = $this->get_users();
-            array_push($current_users, array(
-                'id' => $new_id,
-                'username' => self::_value($user_data['username'], 'Unknown'),
-                'email' => self::_value($user_data['email']),
-                'password' => self::_value($user_data['password'], '#no-password#'),
-                'email_validated' => false,
-                'insert_date' => time(),
-                'update_date' => null,
-                'delete_date' => null,
-            ));
-            File::_save_file(Xlogin::$config['db']['dir_db'] . 'users.json', json_encode($current_users));
-            //
+            if (Xlogin::$config['db']['system'] == 'xlogin') {
+                $new_id = $this->_new_id('users');
+                $current_users = $this->get_users();
+                array_push($current_users, array(
+                    'id' => $new_id,
+                    'username' => self::_value($user_data['username'], 'Unknown'),
+                    'email' => self::_value($user_data['email']),
+                    'password' => self::_value($user_data['password'], '#no-password#'),
+                    'email_validated' => false,
+                    'insert_date' => time(),
+                    'update_date' => null,
+                    'delete_date' => null,
+                ));
+                File::_save_file(Xlogin::$config['db']['dir_db'] . 'users.json', json_encode($current_users));
+                //
+            } else if (Xlogin::$config['db']['system'] == 'xjsondb' && $this->connected) {
+                $new_id = Xjsondb::insert('users', array(
+                            'username' => self::_value($user_data['username'], 'Unknown'),
+                            'email' => self::_value($user_data['email']),
+                            'password' => self::_value($user_data['password'], '#no-password#'),
+                            'email_validated' => false,
+                ));
+            }
             self::$CACHE['users'] = null;
             return $new_id;
         }
@@ -99,6 +120,8 @@ class Xlogin_DB {
                     }
                 }
                 File::_save_file(Xlogin::$config['db']['dir_db'] . 'users.json', json_encode($users));
+            } else if (Xlogin::$config['db']['system'] == 'xjsondb' && $this->connected) {
+                //Todo: Xjsondb::update()
             }
         }
     }
