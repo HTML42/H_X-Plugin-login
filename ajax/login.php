@@ -24,6 +24,9 @@ if (isset($_POST['user']) && is_array($_POST['user']) && isset($_POST['user']['u
     }
     if ($match) {
         Xlogin::session('userid', $userid);
+        if (is_callable(Xlogin::$config['login']['callback'])) {
+            call_user_func(Xlogin::$config['login']['callback'], $userid);
+        }
         $response['status'] = 200;
         $response['response'] = array(
             'userid' => $userid,

@@ -106,9 +106,9 @@ class Xlogin_DB {
     public function edit_user($userid, $data) {
         global $Xme;
         $access = $userid == $Xme->id;
-        $data['update_date'] = time();
         if ($access) {
             if (Xlogin::$config['db']['system'] == 'xlogin') {
+                $data['update_date'] = time();
                 $users = $this->get_users();
                 foreach ($users as &$user) {
                     if ($user['id'] == $userid) {

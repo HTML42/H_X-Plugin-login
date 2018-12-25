@@ -25,6 +25,7 @@ class Xlogin {
             'placeholder_username' => 'Benutzername',
             'placeholder_password' => 'Passwort',
             'button_submit' => 'Login',
+            'callback' => null,
         ),
         'signup' => array(
             'form_css_class' => 'xlogin_form',
@@ -54,6 +55,7 @@ class Xlogin {
             'redirect_text' => 'You will be redirected in 5 seconds..',
             'redirect_ms' => 5000,
             'redirect_url' => 'index.html',
+            'callback' => null,
         )
     );
 

@@ -8,6 +8,10 @@ if (isset($request['id']) && isset($request['hash'])) {
     if (is_numeric($request['id']) && is_string($request['hash']) && strlen($request['hash']) > 5) {
         $User = new Xuser($request['id']);
         if ($User->hash == $request['hash']) {
+            if(is_callable(Xlogin::$config['confirmation']['callback'])) {
+                call_user_func(Xlogin::$config['confirmation']['callback'], $User->id);
+            }
+            //
             $GLOBALS['XLDB']->edit_user($User->id, array(
                 'email_validated' => true
             ));
