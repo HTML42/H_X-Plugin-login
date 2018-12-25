@@ -16,7 +16,8 @@ class Xlogin_DB {
                 Utilities::ensure_structure(Xlogin::$config['db']['dir_db']);
                 break;
         }
-        Xlogin::$config['db']['dir_cache'] = File::n(Xlogin::$config['db']['dir_cache']);
+        //Xlogin-Cache currently unused
+        //Xlogin::$config['db']['dir_cache'] = File::n(Xlogin::$config['db']['dir_cache']);
         Utilities::ensure_structure(Xlogin::$config['db']['dir_cache']);
     }
 
