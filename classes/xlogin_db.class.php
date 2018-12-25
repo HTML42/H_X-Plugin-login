@@ -121,7 +121,7 @@ class Xlogin_DB {
                 }
                 File::_save_file(Xlogin::$config['db']['dir_db'] . 'users.json', json_encode($users));
             } else if (Xlogin::$config['db']['system'] == 'xjsondb' && $this->connected) {
-                //Todo: Xjsondb::update()
+                Xjsondb::update('users', $userid, $data);
             }
         }
     }
