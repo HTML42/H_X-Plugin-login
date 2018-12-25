@@ -55,8 +55,8 @@ class Xuser {
                     $output['ext'][$extension_name] = $extension_variables;
                 } else if (is_array($extension->data_public) && !empty($extension->data_public)) {
                     $output['ext'][$extension_name] = array();
-                    foreach($extension->data_public as $extension_key) {
-                        if(isset($extension_variables[$extension_key])) {
+                    foreach ($extension->data_public as $extension_key) {
+                        if (isset($extension_variables[$extension_key])) {
                             $output['ext'][$extension_name][$extension_key] = $extension_variables[$extension_key];
                         }
                     }
@@ -65,10 +65,39 @@ class Xuser {
         }
         return $output;
     }
-    
+
     public function email_confirmation() {
         $email_response = Emails::create('confirmation', $this->email, $this);
         return $email_response;
+    }
+
+    public static function get_id_by_username($username) {
+        global $XLDB;
+        $userid = 0;
+        $users = $XLDB->get_users();
+        foreach ($users as $user) {
+            if ($user['username'] == $username) {
+                $userid = $user['id'];
+                break;
+            }
+        }
+        if ($userid <= 0) {
+            foreach ($users as $user) {
+                if (strtolower($user['username']) == strtolower($username)) {
+                    $userid = $user['id'];
+                    break;
+                }
+            }
+        }
+        return $userid;
+    }
+    public static function get_by_username($username) {
+        return new Xuser(self::get_id_by_username($username));
+    }
+    
+    public function is_me() {
+        global $Xme;
+        return $this->id == $Xme->id;
     }
 
 }
