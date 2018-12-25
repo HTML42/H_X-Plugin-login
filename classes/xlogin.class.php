@@ -5,6 +5,8 @@ class Xlogin {
     const TEMPLATES = array(
         'login' => X_LOGIN_PATH . 'templates/login.php',
         'signup' => X_LOGIN_PATH . 'templates/signup.php',
+        'script_email_confirmation' => X_LOGIN_PATH . 'templates/script_email_confirmation.php',
+        'js_vars' => X_LOGIN_PATH . 'templates/js_vars.php',
     );
 
     public static $config = array(
@@ -45,6 +47,13 @@ class Xlogin {
                 'min-length' => 4
             )
         ),
+        'confirmation' => array(
+            'response_success' => 'Email successful confirmed.',
+            'response_error' => 'Request Wrong.',
+            'redirect_text' => 'You will be redirected in 5 seconds..',
+            'redirect_ms' => 5000,
+            'redirect_url' => 'index.html',
+        )
     );
 
     public static function password($string) {

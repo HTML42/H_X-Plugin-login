@@ -69,6 +69,9 @@ class Xlogin_DB {
                 'email' => self::_value($user_data['email']),
                 'password' => self::_value($user_data['password'], '#no-password#'),
                 'email_validated' => false,
+                'insert_date' => time(),
+                'update_date' => null,
+                'delete_date' => null,
             ));
             File::_save_file(Xlogin::$config['db']['dir_db'] . 'users.json', json_encode($current_users));
             //
@@ -76,6 +79,27 @@ class Xlogin_DB {
             return $new_id;
         }
         return null;
+    }
+
+    public function edit_user($userid, $data) {
+        global $Xme;
+        $access = $userid == $Xme->id;
+        $data['update_date'] = time();
+        if ($access) {
+            if (Xlogin::$config['db']['system'] == 'xlogin') {
+                $users = $this->get_users();
+                foreach ($users as &$user) {
+                    if ($user['id'] == $userid) {
+                        foreach ($data as $key => $value) {
+                            if ($key != 'id') {
+                                $user[$key] = $value;
+                            }
+                        }
+                    }
+                }
+                File::_save_file(Xlogin::$config['db']['dir_db'] . 'users.json', json_encode($users));
+            }
+        }
     }
 
     public function _new_id($table = 'users') {

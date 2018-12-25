@@ -1,7 +1,7 @@
 //#Variables
 @xlogin_row_height: 40px;
 
-//#plugins/login/templates/login.php
+//# plugins/login/templates/login.php | plugins/login/templates/signup.php
 .xlogin_form {
     position: relative;
     padding: @distance_tiny;
@@ -126,5 +126,46 @@
             height: @xlogin_row_height;
             opacity: 0;
         }
+    }
+}
+
+//
+.xlogin_notice {
+
+}
+//# plugins/login/templates/login.php | plugins/login/templates/signup.php
+.xlogin_notice {
+    position: relative;
+    padding: @distance_normal;
+    margin: @distance_normal -@distance_small @distance_big -@distance_small;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    color: rgba(0, 0, 0, .6);
+
+    //Dimensions
+    /*
+    .xlogin_notice {
+        &_error {}
+        &_success {}
+    }
+    */
+
+    //Styles
+    &.xlogin_notice_error {
+        background-color: rgba(255, 0, 0, .2);
+        color: rgba(200, 0, 0, .7);
+    }
+    &.xlogin_notice_success {
+        background-color: rgba(0, 255, 0, .2);
+        color: rgba(0, 200, 0, .7);
+    }
+    + .xlogin_notice {
+        border-top: 2px solid rgba(0, 0, 0, .5);
+        margin-top: -@distance_big;
+    }
+
+    //Big Screens
+    @media @media_big {
     }
 }
