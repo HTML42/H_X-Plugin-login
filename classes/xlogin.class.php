@@ -37,6 +37,7 @@ class Xlogin {
             'placeholder_password' => 'Passwort',
             'placeholder_password2' => 'Passwort wiederholen',
             'button_submit' => 'Registration',
+            'callback' => null,
         ),
         'validation' => array(
             'username' => array(

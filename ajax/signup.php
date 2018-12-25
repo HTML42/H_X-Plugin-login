@@ -66,6 +66,9 @@ if(X_LOGIN) {
                 'username' => $username,
                 'email' => $email,
             );
+            if(is_callable(Xlogin::$config['signup']['callback'])) {
+                call_user_func(Xlogin::$config['signup']['callback'], $userid);
+            }
         }
     }
 } else {
