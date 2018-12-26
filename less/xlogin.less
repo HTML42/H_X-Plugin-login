@@ -91,48 +91,44 @@
             }
         }
     }
-    //
-    .xlogin_already_logged_in {
+}
+//
+.xlogin_already_logged_in {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.8);
+    .xlogin_logoutlink {
         position: absolute;
-        top: 0;
-        right: 0;
         bottom: 0;
         left: 0;
-        z-index: 2;
-        background-color: rgba(255, 255, 255, 0.8);
-        .xlogin_logoutlink {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: @xlogin_row_height;
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.5);
-            transition: background-color .3s linear;
-            cursor: pointer;
-            .xlogin_logoutlink_text {
-                display: inline-block;
-                padding: @distance_small @distance_normal;
-                color: #FFF;
-                font-weight: 700;
-                font-style: italic;
-            }
-            &:hover {
-                background-color: rgba(0, 0, 0, 0.7);
-            }
+        right: 0;
+        height: @xlogin_row_height;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        transition: background-color .3s linear;
+        cursor: pointer;
+        .xlogin_logoutlink_text {
+            display: inline-block;
+            padding: @distance_small @distance_normal;
+            color: #FFF;
+            font-weight: 700;
+            font-style: italic;
         }
-        &_spacer {
-            display: block;
-            height: @xlogin_row_height;
-            opacity: 0;
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.7);
         }
+    }
+    &_spacer {
+        display: block;
+        height: @xlogin_row_height;
+        opacity: 0;
     }
 }
 
-//
-.xlogin_notice {
-
-}
 //# plugins/login/templates/login.php | plugins/login/templates/signup.php
 .xlogin_notice {
     position: relative;
