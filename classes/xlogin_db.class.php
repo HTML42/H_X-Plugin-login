@@ -54,8 +54,7 @@ class Xlogin_DB {
             }
             return null;
         } else if (Xlogin::$config['db']['system'] == 'xjsondb' && $this->connected) {
-            $user_data = Xjsondb::select('users', $id);
-            return isset($user_data[0]) ? $user_data[0] : array();
+            return Xjsondb::select_first('users', $id);
         }
         return null;
     }
@@ -123,6 +122,7 @@ class Xlogin_DB {
             } else if (Xlogin::$config['db']['system'] == 'xjsondb' && $this->connected) {
                 Xjsondb::update('users', $userid, $data);
             }
+            self::$CACHE['users'] = null;
         }
     }
 

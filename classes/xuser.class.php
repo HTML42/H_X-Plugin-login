@@ -6,9 +6,9 @@ class Xuser {
     public $username;
     public $email;
     public $email_validated = null;
-    public $groups = null;
     public $hash = null;
     public $ext = array();
+    public static $INSTANCE_CACHE = array();
 
     public function __construct($userid = 0) {
         global $XLDB;
@@ -29,13 +29,22 @@ class Xuser {
         $this->username = (isset($data['username']) && strval($data['username']) ? $data['username'] : 'Unknown');
         $this->email = (isset($data['email']) && strval($data['email']) ? $data['email'] : 'no@email.com');
         $this->email_validated = (isset($data['email_validated']) && boolval($data['email_validated']) ? $data['email_validated'] : false);
-        $this->groups = array();
-        //
-        $this->hash = strtoupper(md5($this->id . '||' . $this->email));
+        $this->hash = (isset($data['hash']) && strval($data['hash']) ? $data['hash'] : strtoupper(md5($this->id . '||' . $this->email)));
     }
 
     public function add_extension($ext_name, $ext_value) {
         $this->ext[$ext_name] = $ext_value;
+    }
+
+    public static function load($userid) {
+        if (is_numeric($userid)) {
+            if (!isset(self::$INSTANCE_CACHE[$userid])) {
+                self::$INSTANCE_CACHE[$userid] = new Xuser($userid);
+            }
+            return self::$INSTANCE_CACHE[$userid];
+        } else {
+            return null;
+        }
     }
 
     public function output() {
@@ -44,7 +53,6 @@ class Xuser {
             'username' => $this->username,
             'email' => $this->email,
             'email_validated' => $this->email_validated,
-            'groups' => $this->groups,
             'ext' => array(),
         );
         foreach ($this->ext as $extension_name => $extension) {
@@ -91,10 +99,11 @@ class Xuser {
         }
         return $userid;
     }
+
     public static function get_by_username($username) {
-        return new Xuser(self::get_id_by_username($username));
+        return Xuser::load(self::get_id_by_username($username));
     }
-    
+
     public function is_me() {
         global $Xme;
         return $this->id == $Xme->id;

@@ -6,7 +6,7 @@ $request = isset($_GET['request']) ? json_decode(base64_decode($_GET['request'])
 
 if (isset($request['id']) && isset($request['hash'])) {
     if (is_numeric($request['id']) && is_string($request['hash']) && strlen($request['hash']) > 5) {
-        $User = new Xuser($request['id']);
+        $User = Xuser::load($request['id']);
         if ($User->hash == $request['hash']) {
             if(is_callable(Xlogin::$config['confirmation']['callback'])) {
                 call_user_func(Xlogin::$config['confirmation']['callback'], $User->id);

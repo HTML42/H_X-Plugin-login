@@ -7,4 +7,4 @@ include PROJECT_ROOT . 'plugins/login/kickstart.php';
 $XLDB = new Xlogin_DB();
 
 #Create Current User
-$Xme = new Xuser(X_LOGIN_ID);
+$Xme = Xuser::load(X_LOGIN_ID);
