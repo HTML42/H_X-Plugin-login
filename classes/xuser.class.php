@@ -43,7 +43,7 @@ class Xuser {
             }
             return self::$INSTANCE_CACHE[$userid];
         } else {
-            return null;
+            return new Xuser();
         }
     }
 
