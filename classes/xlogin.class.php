@@ -67,19 +67,20 @@ class Xlogin {
         if (isset($_SESSION['xlogin']) && $_SESSION['xlogin'] != Utilities::remote_ip()) {
             return null;
         }
+        $session_key = 'xlogin_data_' . md5(__FILE__);
         if ($value === '#undefined#') {
             if (!isset($_SESSION['xlogin_data'])) {
                 return null;
             }
-            return (isset($_SESSION['xlogin_data'][$key]) ? $_SESSION['xlogin_data'][$key] : null);
+            return (isset($_SESSION[$session_key][$key]) ? $_SESSION[$session_key][$key] : null);
         } else {
             if (!isset($_SESSION['xlogin'])) {
                 $_SESSION['xlogin'] = Utilities::remote_ip();
             }
-            if (!isset($_SESSION['xlogin_data']) || !is_array($_SESSION['xlogin_data'])) {
-                $_SESSION['xlogin_data'] = array();
+            if (!isset($_SESSION[$session_key]) || !is_array($_SESSION[$session_key])) {
+                $_SESSION[$session_key] = array();
             }
-            $_SESSION['xlogin_data'][$key] = $value;
+            $_SESSION[$session_key][$key] = $value;
         }
         return true;
     }
