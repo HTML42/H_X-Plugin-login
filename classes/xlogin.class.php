@@ -69,7 +69,7 @@ class Xlogin {
         }
         $session_key = 'xlogin_data_' . md5(__FILE__);
         if ($value === '#undefined#') {
-            if (!isset($_SESSION['xlogin_data'])) {
+            if (!isset($_SESSION[$session_key])) {
                 return null;
             }
             return (isset($_SESSION[$session_key][$key]) ? $_SESSION[$session_key][$key] : null);
